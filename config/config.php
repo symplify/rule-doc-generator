@@ -12,6 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('Symplify\Gerudoc\\', __DIR__ . '/../src')
-        ->exclude([__DIR__ . '/../src/HttpKernel']);
+    $services->load('Symplify\RuleDocGenerator\\', __DIR__ . '/../src')
+        ->exclude([__DIR__ . '/../src/HttpKernel', __DIR__ . '/../src/ValueObject']);
 };
