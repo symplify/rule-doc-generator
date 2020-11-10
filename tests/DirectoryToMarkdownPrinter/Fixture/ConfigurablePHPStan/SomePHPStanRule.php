@@ -2,17 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Symplify\RuleDocGenerator\Tests\DirectoryToMarkdownPrinter\Fixture\ConfigurablePHPCSFixer;
+namespace Symplify\RuleDocGenerator\Tests\DirectoryToMarkdownPrinter\Fixture\ConfigurablePHPStan;
 
-use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Tokenizer\Tokens;
+use PHPStan\Rules\Rule;
 use Symplify\RuleDocGenerator\Contract\ConfigurableRuleInterface;
 use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class SomeConfiguredFixer extends AbstractFixer implements DocumentedRuleInterface, ConfigurableRuleInterface
+final class SomePHPStanRule implements Rule, DocumentedRuleInterface, ConfigurableRuleInterface
 {
+    /**
+     * @var int
+     */
+    private $someValue;
+
+    public function __construct(int $someValue = 10)
+    {
+        $this->someValue = $someValue;
+    }
+
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Some description', [
@@ -25,21 +35,17 @@ CODE_SAMPLE
 good code
 CODE_SAMPLE
                 , [
-                    'key' => 'value',
+                    'someValue' => 10,
                 ]
             )
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function getNodeType(): string
     {
     }
 
-    public function getDefinition()
-    {
-    }
-
-    public function isCandidate(Tokens $tokens)
+    public function processNode(\PhpParser\Node $node, \PHPStan\Analyser\Scope $scope): array
     {
     }
 }
