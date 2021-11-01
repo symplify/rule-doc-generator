@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Symplify\RuleDocGenerator\HttpKernel;
+namespace Symplify\RuleDocGenerator\Kernel;
 
 use Psr\Container\ContainerInterface;
 use Symplify\MarkdownDiff\ValueObject\MarkdownDiffConfig;
