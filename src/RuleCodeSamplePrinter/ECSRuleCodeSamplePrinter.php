@@ -15,20 +15,20 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class ECSRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterface
 {
     public function __construct(
-        private BadGoodCodeSamplePrinter $badGoodCodeSamplePrinter,
-        private ConfiguredCodeSamplerPrinter $configuredCodeSamplerPrinter,
-        private ECSConfigConfiguredRuleCustomPrinter $ecsConfigConfiguredRuleCustomPrinter,
-        private DiffCodeSamplePrinter $diffCodeSamplePrinter
+        private readonly BadGoodCodeSamplePrinter $badGoodCodeSamplePrinter,
+        private readonly ConfiguredCodeSamplerPrinter $configuredCodeSamplerPrinter,
+        private readonly ECSConfigConfiguredRuleCustomPrinter $ecsConfigConfiguredRuleCustomPrinter,
+        private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter
     ) {
     }
 
     public function isMatch(string $class): bool
     {
-        if (is_a($class, 'PHP_CodeSniffer\Sniffs\Sniff', true)) {
+        if (str_ends_with($class, 'Fixer')) {
             return true;
         }
 
-        return is_a($class, 'PhpCsFixer\Fixer\FixerInterface', true);
+        return str_ends_with($class, 'Sniff');
     }
 
     /**

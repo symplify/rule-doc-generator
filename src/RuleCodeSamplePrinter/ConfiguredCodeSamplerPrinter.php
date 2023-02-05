@@ -14,9 +14,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class ConfiguredCodeSamplerPrinter
 {
     public function __construct(
-        private SmartPhpConfigPrinter $smartPhpConfigPrinter,
-        private MarkdownCodeWrapper $markdownCodeWrapper,
-        private DiffCodeSamplePrinter $diffCodeSamplePrinter
+        private readonly SmartPhpConfigPrinter $smartPhpConfigPrinter,
+        private readonly MarkdownCodeWrapper $markdownCodeWrapper,
+        private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter
     ) {
     }
 
@@ -49,6 +49,7 @@ final class ConfiguredCodeSamplerPrinter
         $lines[] = '↓';
 
         $newLines = $this->diffCodeSamplePrinter->print($configuredCodeSample);
+
         return array_merge($lines, $newLines);
     }
 }

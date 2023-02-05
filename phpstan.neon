@@ -1,0 +1,14 @@
+parameters:
+    level: 8
+
+    paths:
+        - src
+        - config
+        - tests
+
+    excludePaths:
+        - '*/tests/**/Source/*'
+        - '*/tests/**/Fixture/*'
+
+    ignoreErrors:
+        - '#Parameter \#1 \$objectOrClass of class ReflectionClass constructor expects class-string\<T of object\>\|T of object, string given#'
