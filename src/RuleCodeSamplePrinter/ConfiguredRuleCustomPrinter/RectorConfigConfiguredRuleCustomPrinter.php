@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter\ConfiguredRuleCustomPrinter;
 
+use Rector\Config\RectorConfig;
 use Symplify\PhpConfigPrinter\NodeFactory\ContainerConfiguratorReturnClosureFactory;
 use Symplify\PhpConfigPrinter\Printer\PhpParserPhpConfigPrinter;
 use Symplify\RuleDocGenerator\CaseConverter\RectorRuleCaseConverter;
@@ -14,8 +15,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class RectorConfigConfiguredRuleCustomPrinter implements ConfiguredRuleCustomPrinterInterface
 {
     public function __construct(
-        private ContainerConfiguratorReturnClosureFactory $containerConfiguratorReturnClosureFactory,
-        private PhpParserPhpConfigPrinter $phpParserPhpConfigPrinter,
+        private readonly ContainerConfiguratorReturnClosureFactory $containerConfiguratorReturnClosureFactory,
+        private readonly PhpParserPhpConfigPrinter $phpParserPhpConfigPrinter,
     ) {
     }
 
@@ -30,7 +31,7 @@ final class RectorConfigConfiguredRuleCustomPrinter implements ConfiguredRuleCus
                     'configuration' => $configuredCodeSample->getConfiguration(),
                 ],
             ],
-        ], 'Rector\Config\RectorConfig');
+        ], RectorConfig::class);
 
         return $this->phpParserPhpConfigPrinter->prettyPrintFile([$return]);
     }
