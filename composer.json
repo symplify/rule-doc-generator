@@ -20,9 +20,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
-        "friendsofphp/php-cs-fixer": "^3.14",
         "phpstan/phpstan": "^1.9.14",
-        "symplify/easy-coding-standard": "*"
+        "symplify/easy-coding-standard": "^11.2"
     },
     "autoload": {
         "psr-4": {
