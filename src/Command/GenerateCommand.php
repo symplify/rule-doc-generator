@@ -43,7 +43,7 @@ final class GenerateCommand extends Command
             getcwd() . '/docs/rules_overview.md'
         );
 
-        $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_NONE, 'Group in categories');
+        $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_OPTIONAL, 'Group rules by namespace position', 1);
         $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
     }
 

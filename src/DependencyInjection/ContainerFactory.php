@@ -48,13 +48,31 @@ final class ContainerFactory
             return new SymfonyStyle($input, $output);
         });
 
-        $container->singleton(Application::class, static function (Container $container): Application {
+        $container->singleton(Application::class, function (Container $container): Application {
             $application = new Application();
 
             $generateCommand = $container->make(GenerateCommand::class);
             $application->add($generateCommand);
 
+            $this->propertyCallable($application, 'commands', function (array $defaultCommands) {
+                unset($defaultCommands['completion']);
+                unset($defaultCommands['help']);
+
+                return $defaultCommands;
+            });
+
             return $application;
         });
+    }
+
+    private function propertyCallable(object $object, string $propertyName, callable $callable): void
+    {
+        $reflectionProperty = new ReflectionProperty($object, $propertyName);
+        $reflectionProperty->setAccessible(true);
+
+        $value = $reflectionProperty->getValue($object);
+        $modifiedValue = $callable($value);
+
+        $reflectionProperty->setValue($object, $modifiedValue);
     }
 }
