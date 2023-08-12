@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use Symplify\RuleDocGenerator\Kernel\RuleDocGeneratorKernel;
-use Symplify\SymplifyKernel\ValueObject\KernelBootAndApplicationRun;
-
 # 1. autoload
 $possibleAutoloadPaths = [
     // after split package

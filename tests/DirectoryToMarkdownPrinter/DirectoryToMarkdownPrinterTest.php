@@ -6,13 +6,11 @@ namespace Symplify\RuleDocGenerator\Tests\DirectoryToMarkdownPrinter;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symplify\PackageBuilder\Testing\AbstractKernelTestCase;
 use Symplify\RuleDocGenerator\DirectoryToMarkdownPrinter;
-use Symplify\RuleDocGenerator\Kernel\RuleDocGeneratorKernel;
+use Symplify\RuleDocGenerator\Tests\AbstractTestCase;
 use Symplify\RuleDocGenerator\Tests\Fixture\StaticFixtureUpdater;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
-final class DirectoryToMarkdownPrinterTest extends AbstractKernelTestCase
+final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
 {
     private DirectoryToMarkdownPrinter $directoryToMarkdownPrinter;
 
@@ -22,7 +20,7 @@ final class DirectoryToMarkdownPrinterTest extends AbstractKernelTestCase
             __DIR__ . '/config/config_with_category_inferer.php',
         ]);
 
-        $this->directoryToMarkdownPrinter = $this->getService(DirectoryToMarkdownPrinter::class);
+        $this->directoryToMarkdownPrinter = $this->make(DirectoryToMarkdownPrinter::class);
     }
 
     #[DataProvider('provideDataPHPStan')]
@@ -32,8 +30,7 @@ final class DirectoryToMarkdownPrinterTest extends AbstractKernelTestCase
     {
         $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $shouldCategorize);
 
-        $expectedFileInfo = new SmartFileInfo($expectedFile);
-        StaticFixtureUpdater::updateExpectedFixtureContent($fileContent, $expectedFileInfo);
+        StaticFixtureUpdater::updateExpectedFixtureContent($fileContent, $expectedFile);
 
         $directoryFileInfo = new SmartFileInfo($directory);
         $this->assertStringEqualsFile($expectedFile, $fileContent, $directoryFileInfo->getRelativeFilePathFromCwd());

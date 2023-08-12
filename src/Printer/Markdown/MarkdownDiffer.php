@@ -6,8 +6,6 @@ namespace Symplify\RuleDocGenerator\MarkdownDiffer;
 
 use Nette\Utils\Strings;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
-use Symplify\PackageBuilder\Reflection\PrivatesAccessor;
 use Symplify\RuleDocGenerator\Diff\Output\CompleteUnifiedDiffOutputBuilderFactory;
 
 /**
@@ -30,12 +28,9 @@ final class MarkdownDiffer
     private readonly Differ $differ;
 
     public function __construct(
+        CompleteUnifiedDiffOutputBuilderFactory $completeUnifiedDiffOutputBuilderFactory,
     ) {
-        $completeUnifiedDiffOutputBuilderFactory = new CompleteUnifiedDiffOutputBuilderFactory(
-            new PrivatesAccessor(),
-        );
         $unifiedDiffOutputBuilder = $completeUnifiedDiffOutputBuilderFactory->create();
-
         $this->differ = new Differ($unifiedDiffOutputBuilder);
     }
 

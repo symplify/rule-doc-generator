@@ -7,7 +7,6 @@ namespace Symplify\RuleDocGenerator\Finder;
 use Nette\Loaders\RobotLoader;
 use ReflectionClass;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class ClassByTypeFinder
 {
@@ -38,7 +37,7 @@ final class ClassByTypeFinder
                 continue;
             }
 
-            $fileInfo = new SmartFileInfo($file);
+            $filePaths[] = $file;
             $relativeFilePath = $fileInfo->getRelativeFilePathFromDirectory($workingDirectory);
 
             $desiredClasses[] = new RuleClassWithFilePath($class, $relativeFilePath);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Symplify\RuleDocGenerator\Text;
 
 use Nette\Utils\Strings;
-use Symplify\PackageBuilder\Reflection\ClassLikeExistenceChecker;
 use Throwable;
 
 /**
@@ -56,11 +55,6 @@ final class KeywordHighlighter
      * @see https://regex101.com/r/18wjck/2
      */
     private const COMMA_SPLIT_REGEX = '#(?<call>\w+\(.*\))(\s{0,})(?<comma>,)(?<quote>\`)#';
-
-    public function __construct(
-        private readonly ClassLikeExistenceChecker $classLikeExistenceChecker
-    ) {
-    }
 
     public function highlight(string $content): string
     {
@@ -121,8 +115,8 @@ final class KeywordHighlighter
             return true;
         }
 
-        if ($this->classLikeExistenceChecker->doesClassLikeExist($word)) {
-            // not a class
+        if ($this->doesClassLikeExist($word)) {
+            // not a className
             if (! \str_contains($word, '\\')) {
                 return in_array($word, [Throwable::class, 'Exception'], true);
             }
@@ -131,5 +125,18 @@ final class KeywordHighlighter
         }
 
         return false;
+    }
+
+    private function doesClassLikeExist(string $className): bool
+    {
+        if (class_exists($className)) {
+            return true;
+        }
+
+        if (interface_exists($className)) {
+            return true;
+        }
+
+        return trait_exists($className);
     }
 }

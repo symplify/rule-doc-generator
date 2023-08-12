@@ -7,7 +7,7 @@ namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter;
 use Symplify\PhpConfigPrinter\Printer\SmartPhpConfigPrinter;
 use Symplify\RuleDocGenerator\Contract\Printer\ConfiguredRuleCustomPrinterInterface;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\DiffCodeSamplePrinter;
-use Symplify\RuleDocGenerator\Printer\MarkdownCodeWrapper;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
