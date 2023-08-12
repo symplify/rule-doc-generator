@@ -44,14 +44,14 @@ final class GenerateCommand extends Command
         );
 
         $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_NONE, 'Group in categories');
-        $this->addOption('skip-type', null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
+        $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $paths = (array) $input->getArgument(Option::PATHS);
         $shouldCategorize = (bool) $input->getOption(Option::CATEGORIZE);
-        $skipTypes = (array) $input->getOption('skip-type');
+        $skipTypes = (array) $input->getOption(Option::SKIP_TYPE);
 
         // dump markdown file
         $outputFilePath = (string) $input->getOption(Option::OUTPUT_FILE);

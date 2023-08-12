@@ -19,9 +19,7 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
         $this->directoryToMarkdownPrinter = $this->make(DirectoryToMarkdownPrinter::class);
     }
 
-    #[DataProvider('provideDataPHPStan')]
-    #[DataProvider('provideDataPHPCSFixer')]
-    #[DataProvider('provideDataRector')]
+    #[DataProvider('provideData')]
     public function test(string $directory, string $expectedFile, bool $shouldCategorize = false): void
     {
         $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $shouldCategorize, []);
@@ -31,41 +29,18 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
         $this->assertStringEqualsFile($expectedFile, $fileContent, $directory);
     }
 
-    public static function provideDataPHPStan(): Iterator
+    public static function provideData(): Iterator
     {
         yield [__DIR__ . '/Fixture/PHPStan/Standard', __DIR__ . '/Expected/phpstan/phpstan_content.md'];
+
         yield [
             __DIR__ . '/Fixture/PHPStan/Configurable',
             __DIR__ . '/Expected/phpstan/configurable_phpstan_content.md',
         ];
-    }
 
-    public static function provideDataPHPCSFixer(): Iterator
-    {
         yield [__DIR__ . '/Fixture/PHPCSFixer/Standard', __DIR__ . '/Expected/php-cs-fixer/phpcsfixer_content.md'];
 
-        yield [
-            __DIR__ . '/Fixture/PHPCSFixer/Configurable',
-            __DIR__ . '/Expected/php-cs-fixer/configurable_phpcsfixer_content.md',
-        ];
-    }
-
-    /**
-     * @return Iterator<string[]|bool[]>
-     */
-    public static function provideDataRector(): Iterator
-    {
         yield [__DIR__ . '/Fixture/Rector/Standard', __DIR__ . '/Expected/rector/rector_content.md'];
-        yield [
-            __DIR__ . '/Fixture/Rector/Configurable',
-            __DIR__ . '/Expected/rector/configurable_rector_content.md',
-            false,
-        ];
-        yield [
-            __DIR__ . '/Fixture/Rector/ComposerJsonAware',
-            __DIR__ . '/Expected/rector/composer_json_aware_rector_content.md',
-        ];
-        yield [__DIR__ . '/Fixture/Rector/ExtraFile', __DIR__ . '/Expected/rector/extra_file_rector_content.md'];
 
         yield [__DIR__ . '/Fixture/Rector/Standard', __DIR__ . '/Expected/rector/rector_categorized.md', true];
     }

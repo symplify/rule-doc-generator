@@ -4,11 +4,11 @@
 
 ## Categories
 
-- [Big Category](#big-category) (2)
+- [Standard](#standard) (2)
 
 <br>
 
-## Big Category
+## Standard
 
 ### SomeRector
 

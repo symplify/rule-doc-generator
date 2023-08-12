@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Symplify\RuleDocGenerator\Printer;
 
 use Nette\Utils\Strings;
-use Symplify\RuleDocGenerator\Category\CategoryResolver;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\CodeSamplePrinter;
 use Symplify\RuleDocGenerator\Text\KeywordHighlighter;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Webmozart\Assert\Assert;
 
 final class RuleDefinitionsPrinter
 {
     public function __construct(
         private readonly CodeSamplePrinter $codeSamplePrinter,
         private readonly KeywordHighlighter $keywordHighlighter,
-        private readonly CategoryResolver $categoryResolver,
     ) {
     }
 
@@ -55,8 +54,9 @@ final class RuleDefinitionsPrinter
     {
         $ruleDefinitionsByCategory = [];
 
+        // have a convention from namespace :)
         foreach ($ruleDefinitions as $ruleDefinition) {
-            $category = $this->categoryResolver->resolve($ruleDefinition);
+            $category = $this->resolveCategory($ruleDefinition);
             $ruleDefinitionsByCategory[$category][] = $ruleDefinition;
         }
 
@@ -113,5 +113,20 @@ final class RuleDefinitionsPrinter
         $lines[] = '<br>';
 
         return $lines;
+    }
+
+    private function resolveCategory(RuleDefinition $ruleDefinition): string
+    {
+        $classNameParts = explode('\\', $ruleDefinition->getRuleClass());
+
+        // get one namespace before last by convention
+        array_pop($classNameParts);
+
+        // @todo handle for Rector rules, to pop one more... @todo make configurable via CLI?
+
+        $category = array_pop($classNameParts);
+        Assert::string($category);
+
+        return $category;
     }
 }

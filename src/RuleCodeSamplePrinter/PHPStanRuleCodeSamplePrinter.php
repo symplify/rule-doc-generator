@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter;
 
-use PHPStan\Rules\Rule;
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
 use Symplify\RuleDocGenerator\Contract\RuleCodeSamplePrinterInterface;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\BadGoodCodeSamplePrinter;
@@ -24,7 +23,7 @@ final class PHPStanRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterfa
 
     public function isMatch(string $class): bool
     {
-        return is_a($class, Rule::class, true);
+        return is_a($class, 'PHPStan\Rules\Rule', true);
     }
 
     /**

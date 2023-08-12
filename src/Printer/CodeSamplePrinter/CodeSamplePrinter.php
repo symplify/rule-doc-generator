@@ -8,6 +8,9 @@ use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
 use Symplify\RuleDocGenerator\Contract\ConfigurableRuleInterface;
 use Symplify\RuleDocGenerator\Contract\RuleCodeSamplePrinterInterface;
 use Symplify\RuleDocGenerator\Exception\ConfigurationBoundException;
+use Symplify\RuleDocGenerator\RuleCodeSamplePrinter\ECSRuleCodeSamplePrinter;
+use Symplify\RuleDocGenerator\RuleCodeSamplePrinter\PHPStanRuleCodeSamplePrinter;
+use Symplify\RuleDocGenerator\RuleCodeSamplePrinter\RectorRuleCodeSamplePrinter;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -17,11 +20,20 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class CodeSamplePrinter
 {
     /**
-     * @param RuleCodeSamplePrinterInterface[] $ruleCodeSamplePrinters
+     * @var RuleCodeSamplePrinterInterface[]
      */
+    private array $ruleCodeSamplePrinters = [];
+
     public function __construct(
-        private readonly array $ruleCodeSamplePrinters
+        ECSRuleCodeSamplePrinter $ecsRuleCodeSamplePrinter,
+        PHPStanRuleCodeSamplePrinter $phpStanRuleCodeSamplePrinter,
+        RectorRuleCodeSamplePrinter $rectorRuleCodeSamplePrinter,
     ) {
+        $this->ruleCodeSamplePrinters = [
+            $ecsRuleCodeSamplePrinter,
+            $phpStanRuleCodeSamplePrinter,
+            $rectorRuleCodeSamplePrinter,
+        ];
     }
 
     /**

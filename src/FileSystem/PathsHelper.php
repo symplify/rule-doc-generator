@@ -6,10 +6,10 @@ namespace Symplify\RuleDocGenerator\FileSystem;
 
 final class PathsHelper
 {
-    public static function relativeFromCwd(string $filePath): string
+    public static function relativeFromDirectory(string $filePath, string $directory): string
     {
         $relativeFilePath = (string) realpath($filePath);
 
-        return str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $relativeFilePath);
+        return str_replace($directory . DIRECTORY_SEPARATOR, '', $relativeFilePath);
     }
 }

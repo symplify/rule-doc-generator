@@ -84,6 +84,7 @@ final class DirectoryToMarkdownPrinter
                         return false;
                     }
                 }
+
                 // nothing to skip
                 return true;
             }

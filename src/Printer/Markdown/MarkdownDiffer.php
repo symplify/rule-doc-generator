@@ -6,7 +6,6 @@ namespace Symplify\RuleDocGenerator\Printer\Markdown;
 
 use Nette\Utils\Strings;
 use SebastianBergmann\Diff\Differ;
-use Symplify\RuleDocGenerator\Diff\Output\CompleteUnifiedDiffOutputBuilderFactory;
 
 /**
  * @see \Symplify\RuleDocGenerator\Tests\MarkdownDiffer\MarkdownDifferTest
@@ -25,13 +24,9 @@ final class MarkdownDiffer
      */
     private const SPACE_AND_NEWLINE_REGEX = '#( ){1,}\n#';
 
-    private readonly Differ $differ;
-
     public function __construct(
-        CompleteUnifiedDiffOutputBuilderFactory $completeUnifiedDiffOutputBuilderFactory,
+        private readonly Differ $differ,
     ) {
-        $unifiedDiffOutputBuilder = $completeUnifiedDiffOutputBuilderFactory->create();
-        $this->differ = new Differ($unifiedDiffOutputBuilder);
     }
 
     public function diff(string $old, string $new): string
