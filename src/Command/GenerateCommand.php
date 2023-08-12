@@ -51,7 +51,7 @@ final class GenerateCommand extends Command
     {
         $paths = (array) $input->getArgument(Option::PATHS);
         $categorizeLevel = $input->getOption(Option::CATEGORIZE);
-        if ($categorizeLevel) {
+        if ($categorizeLevel !== null) {
             $categorizeLevel = (int) $categorizeLevel;
         }
 
