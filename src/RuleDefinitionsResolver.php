@@ -6,9 +6,9 @@ namespace Symplify\RuleDocGenerator;
 
 use ReflectionClass;
 use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
+use Symplify\RuleDocGenerator\Exception\ShouldNotHappenException;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-use Symplify\SymplifyKernel\Exception\ShouldNotHappenException;
 
 final class RuleDefinitionsResolver
 {

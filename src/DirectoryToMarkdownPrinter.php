@@ -66,21 +66,21 @@ final class DirectoryToMarkdownPrinter
     }
 
     /**
-     * @param string[] $documentedRuleClasses
+     * @param RuleClassWithFilePath[] $ruleClassWithFilePaths
      * @param string[] $skipTypes
-     * @return string[]
+     * @return RuleClassWithFilePath[]
      */
-    private function filterOutSkippedTypes(array $documentedRuleClasses, array $skipTypes): array
+    private function filterOutSkippedTypes(array $ruleClassWithFilePaths, array $skipTypes): array
     {
         if ($skipTypes === []) {
-            return $documentedRuleClasses;
+            return $ruleClassWithFilePaths;
         }
 
         return array_filter(
-            $documentedRuleClasses,
-            function (string $className) use ($skipTypes): bool {
+            $ruleClassWithFilePaths,
+            function (RuleClassWithFilePath $ruleClassWithFilePath) use ($skipTypes): bool {
                 foreach ($skipTypes as $skipType) {
-                    if (is_a($className, $skipType, true)) {
+                    if ($ruleClassWithFilePath instanceof $skipType) {
                         return false;
                     }
                 }

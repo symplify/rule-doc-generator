@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\Tests\MarkdownDiffer;
 
-use Symplify\RuleDocGenerator\MarkdownDiffer\MarkdownDiffer;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownDiffer;
 use Symplify\RuleDocGenerator\Tests\AbstractTestCase;
 
 final class MarkdownDifferTest extends AbstractTestCase

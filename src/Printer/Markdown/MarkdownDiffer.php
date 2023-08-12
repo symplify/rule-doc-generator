@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Symplify\RuleDocGenerator\MarkdownDiffer;
+namespace Symplify\RuleDocGenerator\Printer\Markdown;
 
 use Nette\Utils\Strings;
 use SebastianBergmann\Diff\Differ;

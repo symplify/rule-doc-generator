@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symplify\RuleDocGenerator\Printer\CodeSamplePrinter;
 
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
-use Symplify\RuleDocGenerator\MarkdownDiffer\MarkdownDiffer;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownDiffer;
 
 final class DiffCodeSamplePrinter
 {

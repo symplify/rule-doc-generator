@@ -7,7 +7,6 @@ namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter;
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
 use Symplify\RuleDocGenerator\Contract\RuleCodeSamplePrinterInterface;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\DiffCodeSamplePrinter;
-use Symplify\RuleDocGenerator\Printer\MarkdownCodeWrapper;
 use Symplify\RuleDocGenerator\RuleCodeSamplePrinter\ConfiguredRuleCustomPrinter\RectorConfigConfiguredRuleCustomPrinter;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ComposerJsonAwareCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
@@ -18,7 +17,7 @@ final class RectorRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterfac
 {
     public function __construct(
         private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter,
-        private readonly MarkdownCodeWrapper $markdownCodeWrapper,
+        private readonly \Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper $markdownCodeWrapper,
         private readonly ConfiguredCodeSamplerPrinter $configuredCodeSamplerPrinter,
         private readonly RectorConfigConfiguredRuleCustomPrinter $rectorConfigConfiguredRuleCustomPrinter
     ) {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symplify\RuleDocGenerator\Printer\CodeSamplePrinter;
 
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
-use Symplify\RuleDocGenerator\Printer\MarkdownCodeWrapper;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper;
 
 final class BadGoodCodeSamplePrinter
 {

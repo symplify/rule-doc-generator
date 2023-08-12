@@ -16,10 +16,6 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
 
     protected function setUp(): void
     {
-        $this->bootKernelWithConfigs(RuleDocGeneratorKernel::class, [
-            __DIR__ . '/config/config_with_category_inferer.php',
-        ]);
-
         $this->directoryToMarkdownPrinter = $this->make(DirectoryToMarkdownPrinter::class);
     }
 
@@ -28,12 +24,11 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
     #[DataProvider('provideDataRector')]
     public function test(string $directory, string $expectedFile, bool $shouldCategorize = false): void
     {
-        $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $shouldCategorize);
+        $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $shouldCategorize, []);
 
         StaticFixtureUpdater::updateExpectedFixtureContent($fileContent, $expectedFile);
 
-        $directoryFileInfo = new SmartFileInfo($directory);
-        $this->assertStringEqualsFile($expectedFile, $fileContent, $directoryFileInfo->getRelativeFilePathFromCwd());
+        $this->assertStringEqualsFile($expectedFile, $fileContent, $directory);
     }
 
     public static function provideDataPHPStan(): Iterator

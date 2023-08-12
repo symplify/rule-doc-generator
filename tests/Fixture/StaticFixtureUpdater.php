@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\Tests\Fixture;
 
-use Symplify\SmartFileSystem\SmartFileInfo;
-use Symplify\SmartFileSystem\SmartFileSystem;
+use Nette\Utils\FileSystem;
 
 /**
  * @api
@@ -13,46 +12,35 @@ use Symplify\SmartFileSystem\SmartFileSystem;
 final class StaticFixtureUpdater
 {
     public static function updateFixtureContent(
-        SmartFileInfo|string $originalFileInfo,
+        string $originalFilePath,
         string $changedContent,
-        SmartFileInfo $fixtureFileInfo
+        string $fixtureFilePath
     ): void {
         if (! getenv('UPDATE_TESTS') && ! getenv('UT')) {
             return;
         }
 
-        $newOriginalContent = self::resolveNewFixtureContent($originalFileInfo, $changedContent);
+        $newOriginalContent = self::resolveNewFixtureContent($originalFilePath, $changedContent);
 
-        self::getSmartFileSystem()
-            ->dumpFile($fixtureFileInfo->getRealPath(), $newOriginalContent);
+        FileSystem::write($fixtureFilePath, $newOriginalContent);
     }
 
     public static function updateExpectedFixtureContent(
         string $newOriginalContent,
-        SmartFileInfo $expectedFixtureFileInfo
+        string $expectedFilePath
     ): void {
         if (! getenv('UPDATE_TESTS') && ! getenv('UT')) {
             return;
         }
 
-        self::getSmartFileSystem()
-            ->dumpFile($expectedFixtureFileInfo->getRealPath(), $newOriginalContent);
-    }
-
-    private static function getSmartFileSystem(): SmartFileSystem
-    {
-        return new SmartFileSystem();
+        FileSystem::write($expectedFilePath, $newOriginalContent);
     }
 
     private static function resolveNewFixtureContent(
-        SmartFileInfo|string $originalFileInfo,
+        string $originalFilePath,
         string $changedContent
     ): string {
-        if ($originalFileInfo instanceof SmartFileInfo) {
-            $originalContent = $originalFileInfo->getContents();
-        } else {
-            $originalContent = $originalFileInfo;
-        }
+        $originalContent = FileSystem::read($originalFilePath);
 
         if ($originalContent === $changedContent) {
             return $originalContent;

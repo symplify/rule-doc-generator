@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-# 1. autoload
+// 1. autoload
+use Symplify\RuleDocGenerator\DependencyInjection\ContainerFactory;
+
 $possibleAutoloadPaths = [
     // after split package
     __DIR__ . '/../vendor/autoload.php',
@@ -19,11 +21,10 @@ foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
     }
 }
 
-$extraConfigs = [];
-$extraConfig = getcwd() . '/rule-doc-generator.php';
-if (file_exists($extraConfig)) {
-    $extraConfigs[] = $extraConfig;
-}
+$containerFactory = new ContainerFactory();
+$container = $containerFactory->create();
 
-$kernelBootAndApplicationRun = new KernelBootAndApplicationRun(RuleDocGeneratorKernel::class, $extraConfigs);
-$kernelBootAndApplicationRun->run();
+
+$application = $container->make(\Symfony\Component\Console\Application::class);
+$exitCode = $application->run();
+exit($exitCode);

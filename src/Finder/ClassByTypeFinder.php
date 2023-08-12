@@ -37,7 +37,7 @@ final class ClassByTypeFinder
                 continue;
             }
 
-            $filePaths[] = $file;
+            //$filePaths[] = $file;
             $relativeFilePath = $fileInfo->getRelativeFilePathFromDirectory($workingDirectory);
 
             $desiredClasses[] = new RuleClassWithFilePath($class, $relativeFilePath);
