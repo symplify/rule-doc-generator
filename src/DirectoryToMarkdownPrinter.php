@@ -6,7 +6,7 @@ namespace Symplify\RuleDocGenerator;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
-use Symplify\RuleDocGenerator\Finder\ClassByTypeFinder;
+use Symplify\RuleDocGenerator\FileSystem\ClassByTypeFinder;
 use Symplify\RuleDocGenerator\Printer\RuleDefinitionsPrinter;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
 

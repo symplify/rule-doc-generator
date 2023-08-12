@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Symplify\RuleDocGenerator\Finder;
+namespace Symplify\RuleDocGenerator\FileSystem;
 
 use Nette\Loaders\RobotLoader;
 use ReflectionClass;
-use Symplify\RuleDocGenerator\FileSystem\PathsHelper;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
 
 final class ClassByTypeFinder
