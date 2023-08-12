@@ -6,7 +6,6 @@ namespace Symplify\RuleDocGenerator;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
-use Symplify\RuleDocGenerator\Contract\RuleOutFilterInterface;
 use Symplify\RuleDocGenerator\Finder\ClassByTypeFinder;
 use Symplify\RuleDocGenerator\Printer\RuleDefinitionsPrinter;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
@@ -16,22 +15,19 @@ use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
  */
 final class DirectoryToMarkdownPrinter
 {
-    /**
-     * @param RuleOutFilterInterface[] $ruleOutFilters
-     */
     public function __construct(
         private readonly ClassByTypeFinder $classByTypeFinder,
         private readonly SymfonyStyle $symfonyStyle,
         private readonly RuleDefinitionsResolver $ruleDefinitionsResolver,
         private readonly RuleDefinitionsPrinter $ruleDefinitionsPrinter,
-        private readonly array $ruleOutFilters
     ) {
     }
 
     /**
      * @param string[] $directories
+     * @param string[] $skipTypes
      */
-    public function print(string $workingDirectory, array $directories, bool $shouldCategorize): string
+    public function print(string $workingDirectory, array $directories, bool $shouldCategorize, array $skipTypes): string
     {
         // 1. collect documented rules in provided path
         $documentedRuleClasses = $this->classByTypeFinder->findByType(
@@ -40,10 +36,7 @@ final class DirectoryToMarkdownPrinter
             DocumentedRuleInterface::class
         );
 
-        // apply user-defined filters to remove some rules
-        foreach ($this->ruleOutFilters as $ruleOutFilter) {
-            $documentedRuleClasses = $ruleOutFilter->filter($documentedRuleClasses);
-        }
+        $documentedRuleClasses = $this->filterOutSkippedTypes($documentedRuleClasses, $skipTypes);
 
         $message = sprintf('Found %d documented rule classes', count($documentedRuleClasses));
         $this->symfonyStyle->note($message);
@@ -70,5 +63,31 @@ final class DirectoryToMarkdownPrinter
         }
 
         return rtrim($fileContent) . PHP_EOL;
+    }
+
+    /**
+     * @param RuleClassWithFilePath[] $ruleClassWithFilePaths
+     * @param string[] $skipTypes
+     * @return RuleClassWithFilePath[]
+     */
+    private function filterOutSkippedTypes(array $ruleClassWithFilePaths, array $skipTypes): array
+    {
+        if ($skipTypes === []) {
+            return $ruleClassWithFilePaths;
+        }
+
+        return array_filter(
+            $ruleClassWithFilePaths,
+            static function (RuleClassWithFilePath $ruleClassWithFilePath) use ($skipTypes): bool {
+                foreach ($skipTypes as $skipType) {
+                    if ($ruleClassWithFilePath instanceof $skipType) {
+                        return false;
+                    }
+                }
+
+                // nothing to skip
+                return true;
+            }
+        );
     }
 }

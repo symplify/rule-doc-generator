@@ -7,7 +7,7 @@ namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter;
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
 use Symplify\RuleDocGenerator\Contract\RuleCodeSamplePrinterInterface;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\BadGoodCodeSamplePrinter;
-use Symplify\RuleDocGenerator\Printer\MarkdownCodeWrapper;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper;
 use Symplify\RuleDocGenerator\Printer\NeonPrinter;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;

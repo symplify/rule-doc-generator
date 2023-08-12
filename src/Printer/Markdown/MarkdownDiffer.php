@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Symplify\RuleDocGenerator\MarkdownDiffer;
+namespace Symplify\RuleDocGenerator\Printer\Markdown;
 
 use Nette\Utils\Strings;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
-use Symplify\PackageBuilder\Reflection\PrivatesAccessor;
-use Symplify\RuleDocGenerator\Diff\Output\CompleteUnifiedDiffOutputBuilderFactory;
 
 /**
  * @see \Symplify\RuleDocGenerator\Tests\MarkdownDiffer\MarkdownDifferTest
@@ -27,16 +24,9 @@ final class MarkdownDiffer
      */
     private const SPACE_AND_NEWLINE_REGEX = '#( ){1,}\n#';
 
-    private readonly Differ $differ;
-
     public function __construct(
+        private readonly Differ $differ,
     ) {
-        $completeUnifiedDiffOutputBuilderFactory = new CompleteUnifiedDiffOutputBuilderFactory(
-            new PrivatesAccessor(),
-        );
-        $unifiedDiffOutputBuilder = $completeUnifiedDiffOutputBuilderFactory->create();
-
-        $this->differ = new Differ($unifiedDiffOutputBuilder);
     }
 
     public function diff(string $old, string $new): string

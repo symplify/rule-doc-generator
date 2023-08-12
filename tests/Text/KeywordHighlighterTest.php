@@ -6,18 +6,16 @@ namespace Symplify\RuleDocGenerator\Tests\Text;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symplify\PackageBuilder\Testing\AbstractKernelTestCase;
-use Symplify\RuleDocGenerator\Kernel\RuleDocGeneratorKernel;
+use Symplify\RuleDocGenerator\Tests\AbstractTestCase;
 use Symplify\RuleDocGenerator\Text\KeywordHighlighter;
 
-final class KeywordHighlighterTest extends AbstractKernelTestCase
+final class KeywordHighlighterTest extends AbstractTestCase
 {
     private KeywordHighlighter $keywordHighlighter;
 
     protected function setUp(): void
     {
-        $this->bootKernel(RuleDocGeneratorKernel::class);
-        $this->keywordHighlighter = $this->getService(KeywordHighlighter::class);
+        $this->keywordHighlighter = $this->make(KeywordHighlighter::class);
     }
 
     #[DataProvider('provideData')]
