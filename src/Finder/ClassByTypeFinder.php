@@ -26,7 +26,7 @@ final class ClassByTypeFinder
         $robotLoader->rebuild();
 
         $desiredClasses = [];
-        foreach ($robotLoader->getIndexedClasses() as $class => $file) {
+        foreach (array_keys($robotLoader->getIndexedClasses()) as $class) {
             if (! is_a($class, $type, true)) {
                 continue;
             }

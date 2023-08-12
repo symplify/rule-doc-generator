@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\RuleCodeSamplePrinter;
 
+use Rector\Core\Contract\Rector\RectorInterface;
 use Symplify\RuleDocGenerator\Contract\CodeSampleInterface;
 use Symplify\RuleDocGenerator\Contract\RuleCodeSamplePrinterInterface;
 use Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\DiffCodeSamplePrinter;
+use Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper;
 use Symplify\RuleDocGenerator\RuleCodeSamplePrinter\ConfiguredRuleCustomPrinter\RectorConfigConfiguredRuleCustomPrinter;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ComposerJsonAwareCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
@@ -17,7 +19,7 @@ final class RectorRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterfac
 {
     public function __construct(
         private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter,
-        private readonly \Symplify\RuleDocGenerator\Printer\Markdown\MarkdownCodeWrapper $markdownCodeWrapper,
+        private readonly MarkdownCodeWrapper $markdownCodeWrapper,
         private readonly ConfiguredCodeSamplerPrinter $configuredCodeSamplerPrinter,
         private readonly RectorConfigConfiguredRuleCustomPrinter $rectorConfigConfiguredRuleCustomPrinter
     ) {
@@ -25,7 +27,7 @@ final class RectorRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterfac
 
     public function isMatch(string $class): bool
     {
-        return is_a($class, 'Rector\Core\Contract\Rector\RectorInterface', true);
+        return is_a($class, RectorInterface::class, true);
     }
 
     /**

@@ -78,13 +78,12 @@ final class DirectoryToMarkdownPrinter
 
         return array_filter(
             $ruleClassWithFilePaths,
-            function (RuleClassWithFilePath $ruleClassWithFilePath) use ($skipTypes): bool {
+            static function (RuleClassWithFilePath $ruleClassWithFilePath) use ($skipTypes): bool {
                 foreach ($skipTypes as $skipType) {
                     if ($ruleClassWithFilePath instanceof $skipType) {
                         return false;
                     }
                 }
-
                 // nothing to skip
                 return true;
             }
