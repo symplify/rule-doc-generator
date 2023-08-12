@@ -43,14 +43,18 @@ final class GenerateCommand extends Command
             getcwd() . '/docs/rules_overview.md'
         );
 
-        $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_OPTIONAL, 'Group rules by namespace position', 1);
+        $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_REQUIRED, 'Group rules by namespace position');
         $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $paths = (array) $input->getArgument(Option::PATHS);
-        $shouldCategorize = (bool) $input->getOption(Option::CATEGORIZE);
+        $categorizeLevel = $input->getOption(Option::CATEGORIZE);
+        if ($categorizeLevel) {
+            $categorizeLevel = (int) $categorizeLevel;
+        }
+
         $skipTypes = (array) $input->getOption(Option::SKIP_TYPE);
 
         // dump markdown file
@@ -66,7 +70,7 @@ final class GenerateCommand extends Command
         $markdownFileContent = $this->directoryToMarkdownPrinter->print(
             $markdownFileDirectory,
             $paths,
-            $shouldCategorize,
+            $categorizeLevel,
             $skipTypes
         );
 

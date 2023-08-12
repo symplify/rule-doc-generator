@@ -22,25 +22,25 @@ final class RuleDefinitionsPrinter
      * @param RuleDefinition[] $ruleDefinitions
      * @return string[]
      */
-    public function print(array $ruleDefinitions, bool $shouldCategorize): array
+    public function print(array $ruleDefinitions, ?int $categorizeLevel): array
     {
         $ruleCount = count($ruleDefinitions);
 
         $lines = [];
         $lines[] = sprintf('# %d Rules Overview', $ruleCount);
 
-        if ($shouldCategorize) {
-            $ruleDefinitionsByCategory = $this->groupDefinitionsByCategory($ruleDefinitions);
+        if ($categorizeLevel) {
+            $ruleDefinitionsByCategory = $this->groupDefinitionsByCategory($ruleDefinitions, $categorizeLevel);
 
             $categoryMenuLines = $this->createCategoryMenu($ruleDefinitionsByCategory);
             $lines = array_merge($lines, $categoryMenuLines);
 
             foreach ($ruleDefinitionsByCategory as $category => $ruleDefinitions) {
                 $lines[] = '## ' . $category;
-                $lines = $this->printRuleDefinitions($ruleDefinitions, $lines, $shouldCategorize);
+                $lines = $this->printRuleDefinitions($ruleDefinitions, $lines, $categorizeLevel);
             }
         } else {
-            $lines = $this->printRuleDefinitions($ruleDefinitions, $lines, false);
+            $lines = $this->printRuleDefinitions($ruleDefinitions, $lines, null);
         }
 
         return $lines;
@@ -50,13 +50,13 @@ final class RuleDefinitionsPrinter
      * @param RuleDefinition[] $ruleDefinitions
      * @return array<string, RuleDefinition[]>
      */
-    private function groupDefinitionsByCategory(array $ruleDefinitions): array
+    private function groupDefinitionsByCategory(array $ruleDefinitions, int $categorizeLevel): array
     {
         $ruleDefinitionsByCategory = [];
 
         // have a convention from namespace :)
         foreach ($ruleDefinitions as $ruleDefinition) {
-            $category = $this->resolveCategory($ruleDefinition);
+            $category = $this->resolveCategory($ruleDefinition, $categorizeLevel);
             $ruleDefinitionsByCategory[$category][] = $ruleDefinition;
         }
 
@@ -70,10 +70,10 @@ final class RuleDefinitionsPrinter
      * @param string[] $lines
      * @return string[]
      */
-    private function printRuleDefinitions(array $ruleDefinitions, array $lines, bool $shouldCategorize): array
+    private function printRuleDefinitions(array $ruleDefinitions, array $lines, ?int $categorizeLevel): array
     {
         foreach ($ruleDefinitions as $ruleDefinition) {
-            if ($shouldCategorize) {
+            if ($categorizeLevel) {
                 $lines[] = '### ' . $ruleDefinition->getRuleShortClass();
             } else {
                 $lines[] = '## ' . $ruleDefinition->getRuleShortClass();
@@ -115,18 +115,22 @@ final class RuleDefinitionsPrinter
         return $lines;
     }
 
-    private function resolveCategory(RuleDefinition $ruleDefinition): string
+    private function resolveCategory(RuleDefinition $ruleDefinition, int $categorizeLevel): string
     {
         $classNameParts = explode('\\', $ruleDefinition->getRuleClass());
 
         // get one namespace before last by convention
         array_pop($classNameParts);
 
-        // @todo handle for Rector rules, to pop one more... @todo make configurable via CLI?
+        $categoryName = null;
+        while ($categorizeLevel > 0) {
+            // get one namespace before last by convention
+            $categoryName = array_pop($classNameParts);
+            --$categorizeLevel;
+        }
 
-        $category = array_pop($classNameParts);
-        Assert::string($category);
+        Assert::string($categoryName);
 
-        return $category;
+        return $categoryName;
     }
 }

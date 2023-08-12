@@ -27,7 +27,7 @@ final class DirectoryToMarkdownPrinter
      * @param string[] $directories
      * @param string[] $skipTypes
      */
-    public function print(string $workingDirectory, array $directories, bool $shouldCategorize, array $skipTypes): string
+    public function print(string $workingDirectory, array $directories, ?int $categorizeLevel, array $skipTypes): string
     {
         // 1. collect documented rules in provided path
         $documentedRuleClasses = $this->classByTypeFinder->findByType(
@@ -55,7 +55,7 @@ final class DirectoryToMarkdownPrinter
 
         // 3. print rule definitions to markdown lines
         $this->symfonyStyle->note('Printing rule definitions');
-        $markdownLines = $this->ruleDefinitionsPrinter->print($ruleDefinitions, $shouldCategorize);
+        $markdownLines = $this->ruleDefinitionsPrinter->print($ruleDefinitions, $categorizeLevel);
 
         $fileContent = '';
         foreach ($markdownLines as $markdownLine) {

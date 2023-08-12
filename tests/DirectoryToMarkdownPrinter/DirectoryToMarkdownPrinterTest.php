@@ -20,9 +20,9 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
     }
 
     #[DataProvider('provideData')]
-    public function test(string $directory, string $expectedFile, bool $shouldCategorize = false): void
+    public function test(string $directory, string $expectedFile, ?int $categorizeLevel = null): void
     {
-        $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $shouldCategorize, []);
+        $fileContent = $this->directoryToMarkdownPrinter->print(__DIR__, [$directory], $categorizeLevel, []);
 
         StaticFixtureUpdater::updateExpectedFixtureContent($fileContent, $expectedFile);
 
@@ -42,6 +42,6 @@ final class DirectoryToMarkdownPrinterTest extends AbstractTestCase
 
         yield [__DIR__ . '/Fixture/Rector/Standard', __DIR__ . '/Expected/rector/rector_content.md'];
 
-        yield [__DIR__ . '/Fixture/Rector/Standard', __DIR__ . '/Expected/rector/rector_categorized.md', true];
+        yield [__DIR__ . '/Fixture/Rector/Standard', __DIR__ . '/Expected/rector/rector_categorized.md', 1];
     }
 }
