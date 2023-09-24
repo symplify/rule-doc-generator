@@ -54,10 +54,9 @@ final class ContainerFactory
             $generateCommand = $container->make(GenerateCommand::class);
             $application->add($generateCommand);
 
-            $this->propertyCallable($application, 'commands', function (array $defaultCommands) {
+            $this->propertyCallable($application, 'commands', static function (array $defaultCommands) {
                 unset($defaultCommands['completion']);
                 unset($defaultCommands['help']);
-
                 return $defaultCommands;
             });
 
