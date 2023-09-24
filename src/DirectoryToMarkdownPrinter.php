@@ -80,7 +80,7 @@ final class DirectoryToMarkdownPrinter
             $ruleClassWithFilePaths,
             static function (RuleClassWithFilePath $ruleClassWithFilePath) use ($skipTypes): bool {
                 foreach ($skipTypes as $skipType) {
-                    if ($ruleClassWithFilePath instanceof $skipType) {
+                    if (is_a($ruleClassWithFilePath->getClass(), $skipType, true)) {
                         return false;
                     }
                 }
