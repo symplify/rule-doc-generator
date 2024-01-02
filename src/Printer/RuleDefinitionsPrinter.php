@@ -33,7 +33,7 @@ final class RuleDefinitionsPrinter
             $ruleDefinitionsByCategory = $this->groupDefinitionsByCategory($ruleDefinitions, $categorizeLevel);
 
             $categoryMenuLines = $this->createCategoryMenu($ruleDefinitionsByCategory);
-            $lines = array_merge($lines, $categoryMenuLines);
+            $lines = [...$lines, ...$categoryMenuLines];
 
             foreach ($ruleDefinitionsByCategory as $category => $ruleDefinitions) {
                 $lines[] = '## ' . $category;

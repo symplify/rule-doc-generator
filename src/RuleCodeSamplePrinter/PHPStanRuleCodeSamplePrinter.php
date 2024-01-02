@@ -63,6 +63,6 @@ final class PHPStanRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterfa
         $lines[] = '↓';
 
         $newLines = $this->badGoodCodeSamplePrinter->print($configuredCodeSample);
-        return array_merge($lines, $newLines);
+        return [...$lines, ...$newLines];
     }
 }
