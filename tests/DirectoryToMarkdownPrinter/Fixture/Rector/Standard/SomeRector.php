@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Symplify\RuleDocGenerator\Tests\DirectoryToMarkdownPrinter\Fixture\Rector\Standard;
 
-use Rector\Core\Contract\Rector\RectorInterface;
+use PhpParser\Node;
+use Rector\Contract\Rector\RectorInterface;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class SomeRector implements RectorInterface
+final class SomeRector extends AbstractRector implements RectorInterface
 {
     public function getRuleDefinition(): RuleDefinition
     {
@@ -23,5 +25,13 @@ after
 CODE_SAMPLE
             ),
         ]);
+    }
+
+    public function getNodeTypes(): array
+    {
+    }
+
+    public function refactor(Node $node)
+    {
     }
 }
