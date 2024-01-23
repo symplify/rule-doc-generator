@@ -130,9 +130,9 @@ final class RuleDefinitionsPrinter
         }
 
         // remove _ as not part of title
-        $categoryName = trim($categoryName, '_');
-
         Assert::string($categoryName);
+
+        $categoryName = trim($categoryName, '_');
 
         return $categoryName;
     }

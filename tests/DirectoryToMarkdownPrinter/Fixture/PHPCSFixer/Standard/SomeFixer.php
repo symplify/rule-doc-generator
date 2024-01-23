@@ -28,15 +28,15 @@ CODE_SAMPLE
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-    {
-    }
-
     public function getDefinition(): FixerDefinitionInterface
     {
     }
 
     public function isCandidate(Tokens $tokens): bool
+    {
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
     }
 }
