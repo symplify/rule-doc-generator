@@ -129,6 +129,9 @@ final class RuleDefinitionsPrinter
             --$categorizeLevel;
         }
 
+        // remove _ as not part of title
+        $categoryName = trim($categoryName, '_');
+
         Assert::string($categoryName);
 
         return $categoryName;
