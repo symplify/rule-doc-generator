@@ -6,7 +6,7 @@
         "bin/rule-doc-generator"
     ],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "symfony/console": "^6.4",
         "nette/robot-loader": "^3.4|^4.0",
         "symplify/rule-doc-generator-contracts": "^11.1",
