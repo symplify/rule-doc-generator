@@ -7,8 +7,6 @@ require __DIR__ . '/vendor/autoload.php';
 $nowDateTime = new DateTime('now');
 $timestamp = $nowDateTime->format('Ym');
 
-// @see https://github.com/humbug/php-scoper/blob/master/docs/further-reading.md
-
 // see https://github.com/humbug/php-scoper
 return [
     'prefix' => 'RuleDocGenerator' . $timestamp,
@@ -21,4 +19,6 @@ return [
         'stubs/PhpCsFixer/AbstractFixer.php',
         'stubs/Rector/Core/Contract/Rector/RectorInterface.php',
     ],
+
+    'expose-classes' => ['Rector\Contract\Rector\RectorInterface'],
 ];
