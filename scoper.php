@@ -18,7 +18,10 @@ return [
         'vendor/symfony/deprecation-contracts/function.php',
         'stubs/PhpCsFixer/AbstractFixer.php',
         'stubs/Rector/Core/Contract/Rector/RectorInterface.php',
-    ],
 
-    'expose-classes' => ['Rector\Contract\Rector\RectorInterface'],
+        // check original types
+        'src/RuleCodeSamplePrinter/ECSRuleCodeSamplePrinter.php',
+        'src/RuleCodeSamplePrinter/PHPStanRuleCodeSamplePrinter.php',
+        'src/RuleCodeSamplePrinter/RectorRuleCodeSamplePrinter.php',
+    ],
 ];
