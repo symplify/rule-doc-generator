@@ -7,5 +7,10 @@
     },
     "bin": [
         "bin/rule-doc-generator"
-    ]
+    ],
+    "autoload": {
+        "classmap": [
+            "stubs"
+        ]
+    }
 }

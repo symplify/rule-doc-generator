@@ -22,5 +22,5 @@ return [
         'stubs/Rector/Core/Contract/Rector/RectorInterface.php',
     ],
 
-    // @todo unprefix class names?
+
 ];
