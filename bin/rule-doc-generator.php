@@ -21,6 +21,12 @@ foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
     }
 }
 
+// load scoped classes
+$scoperAutoloadFilepath = __DIR__ . '/../vendor/scoper-autoload.php';
+if (file_exists($scoperAutoloadFilepath)) {
+    require_once $scoperAutoloadFilepath;
+}
+
 $containerFactory = new ContainerFactory();
 $container = $containerFactory->create();
 
