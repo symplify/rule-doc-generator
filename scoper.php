@@ -21,6 +21,4 @@ return [
         'stubs/PhpCsFixer/AbstractFixer.php',
         'stubs/Rector/Core/Contract/Rector/RectorInterface.php',
     ],
-
-
 ];
