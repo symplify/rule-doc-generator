@@ -25,13 +25,3 @@ vendor/bin/rule-doc-generator generate src/Rules --output-file docs/symplify_rul
 ```
 
 Happy coding!
-
-<br>
-
-## Report Issues
-
-In case you are experiencing a bug or want to request a new feature head over to the [Symplify monorepo issue tracker](https://github.com/symplify/symplify/issues)
-
-## Contribute
-
-The sources of this package are contained in the Symplify monorepo. We welcome contributions for this package on [symplify/symplify](https://github.com/symplify/symplify).
