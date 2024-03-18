@@ -1,83 +1,62 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Symplify\RuleDocGenerator\Command;
 
-use Nette\Utils\FileSystem;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use RuleDocGenerator202403\Nette\Utils\FileSystem;
+use RuleDocGenerator202403\Symfony\Component\Console\Command\Command;
+use RuleDocGenerator202403\Symfony\Component\Console\Input\InputArgument;
+use RuleDocGenerator202403\Symfony\Component\Console\Input\InputInterface;
+use RuleDocGenerator202403\Symfony\Component\Console\Input\InputOption;
+use RuleDocGenerator202403\Symfony\Component\Console\Output\OutputInterface;
+use RuleDocGenerator202403\Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\DirectoryToMarkdownPrinter;
 use Symplify\RuleDocGenerator\ValueObject\Option;
-
 final class GenerateCommand extends Command
 {
-    public function __construct(
-        private readonly DirectoryToMarkdownPrinter $directoryToMarkdownPrinter,
-        private readonly SymfonyStyle $symfonyStyle,
-    ) {
+    /**
+     * @readonly
+     * @var \Symplify\RuleDocGenerator\DirectoryToMarkdownPrinter
+     */
+    private $directoryToMarkdownPrinter;
+    /**
+     * @readonly
+     * @var \Symfony\Component\Console\Style\SymfonyStyle
+     */
+    private $symfonyStyle;
+    public function __construct(DirectoryToMarkdownPrinter $directoryToMarkdownPrinter, SymfonyStyle $symfonyStyle)
+    {
+        $this->directoryToMarkdownPrinter = $directoryToMarkdownPrinter;
+        $this->symfonyStyle = $symfonyStyle;
         parent::__construct();
     }
-
-    protected function configure(): void
+    protected function configure() : void
     {
         $this->setName('generate');
-
         $this->setDescription('Generated Markdown documentation based on documented rules found in directory');
-
-        $this->addArgument(
-            Option::PATHS,
-            InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-            'Path to directory of your project'
-        );
-
-        $this->addOption(
-            Option::OUTPUT_FILE,
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Path to output generated markdown file',
-            getcwd() . '/docs/rules_overview.md'
-        );
-
+        $this->addArgument(Option::PATHS, InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Path to directory of your project');
+        $this->addOption(Option::OUTPUT_FILE, null, InputOption::VALUE_REQUIRED, 'Path to output generated markdown file', \getcwd() . '/docs/rules_overview.md');
         $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_REQUIRED, 'Group rules by namespace position');
         $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $paths = (array) $input->getArgument(Option::PATHS);
         $categorizeLevel = $input->getOption(Option::CATEGORIZE);
         if ($categorizeLevel !== null) {
             $categorizeLevel = (int) $categorizeLevel;
         }
-
         $skipTypes = (array) $input->getOption(Option::SKIP_TYPE);
-
         // dump markdown file
         $outputFilePath = (string) $input->getOption(Option::OUTPUT_FILE);
-
-        $markdownFileDirectory = dirname($outputFilePath);
-
+        $markdownFileDirectory = \dirname($outputFilePath);
         // ensure directory exists
-        if (! file_exists($markdownFileDirectory)) {
+        if (!\file_exists($markdownFileDirectory)) {
             FileSystem::createDir($markdownFileDirectory);
         }
-
-        $markdownFileContent = $this->directoryToMarkdownPrinter->print(
-            $markdownFileDirectory,
-            $paths,
-            $categorizeLevel,
-            $skipTypes
-        );
-
+        $markdownFileContent = $this->directoryToMarkdownPrinter->print($markdownFileDirectory, $paths, $categorizeLevel, $skipTypes);
         FileSystem::write($outputFilePath, $markdownFileContent);
-
-        $this->symfonyStyle->success(sprintf('File "%s" was created', $outputFilePath));
-
+        $this->symfonyStyle->success(\sprintf('File "%s" was created', $outputFilePath));
         return self::SUCCESS;
     }
 }

@@ -1,23 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Symplify\RuleDocGenerator\ValueObject;
 
 final class RuleClassWithFilePath
 {
-    public function __construct(
-        private readonly string $class,
-        private readonly string $path
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $class;
+    /**
+     * @readonly
+     * @var string
+     */
+    private $path;
+    public function __construct(string $class, string $path)
+    {
+        $this->class = $class;
+        $this->path = $path;
     }
-
-    public function getClass(): string
+    public function getClass() : string
     {
         return $this->class;
     }
-
-    public function getPath(): string
+    public function getPath() : string
     {
         return $this->path;
     }
