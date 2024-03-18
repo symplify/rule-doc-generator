@@ -6,6 +6,7 @@ namespace Symplify\RuleDocGenerator;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
+use Symplify\RuleDocGenerator\Exception\ShouldNotHappenException;
 use Symplify\RuleDocGenerator\FileSystem\ClassByTypeFinder;
 use Symplify\RuleDocGenerator\Printer\RuleDefinitionsPrinter;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
@@ -37,6 +38,10 @@ final class DirectoryToMarkdownPrinter
         );
 
         $documentedRuleClasses = $this->filterOutSkippedTypes($documentedRuleClasses, $skipTypes);
+        if ($documentedRuleClasses === []) {
+            // we need at least some classes
+            throw new ShouldNotHappenException(sprintf('No documented classes found in "%s" directories', implode('","', $directories)));
+        }
 
         $message = sprintf('Found %d documented rule classes', count($documentedRuleClasses));
         $this->symfonyStyle->note($message);
