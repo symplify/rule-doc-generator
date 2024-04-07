@@ -6,6 +6,8 @@ if (class_exists('PhpCsFixer\AbstractFixer')) {
     return;
 }
 
-abstract class AbstractFixer
+use PhpCsFixer\Fixer\FixerInterface;
+
+abstract class AbstractFixer implements FixerInterface
 {
 }
