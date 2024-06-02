@@ -56,7 +56,7 @@ final class GenerateCommand extends Command
 
         $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_REQUIRED, 'Group rules by namespace position');
         $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
-        $this->addOption(Option::README, null, InputOption::VALUE_REQUIRED, 'Render contents to README using placeholders');
+        $this->addOption(Option::README, null, InputOption::VALUE_NONE, 'Render contents to README using placeholders');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
