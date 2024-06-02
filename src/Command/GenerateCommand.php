@@ -13,9 +13,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\DirectoryToMarkdownPrinter;
 use Symplify\RuleDocGenerator\ValueObject\Option;
+use Webmozart\Assert\Assert;
 
 final class GenerateCommand extends Command
 {
+    /**
+     * @var string
+     */
+    private const README_PLACEHOLDER_START = '<!-- ruledoc-start -->';
+
+    /**
+     * @var string
+     */
+    private const README_PLACEHOLDER_END = '<!-- ruledoc-end -->';
+
     public function __construct(
         private readonly DirectoryToMarkdownPrinter $directoryToMarkdownPrinter,
         private readonly SymfonyStyle $symfonyStyle,
@@ -45,6 +56,7 @@ final class GenerateCommand extends Command
 
         $this->addOption(Option::CATEGORIZE, null, InputOption::VALUE_REQUIRED, 'Group rules by namespace position');
         $this->addOption(Option::SKIP_TYPE, null, InputOption::VALUE_REQUIRED, 'Skip specific type in filter');
+        $this->addOption(Option::README, null, InputOption::VALUE_REQUIRED, 'Render contents to README using placeholders');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -74,10 +86,38 @@ final class GenerateCommand extends Command
             $skipTypes
         );
 
-        FileSystem::write($outputFilePath, $markdownFileContent);
+        $isReadme = (bool) $input->getOption(Option::README);
 
-        $this->symfonyStyle->success(sprintf('File "%s" was created', $outputFilePath));
+        if ($isReadme) {
+            $this->renderToReadme($markdownFileContent);
+        } else {
+            FileSystem::write($outputFilePath, $markdownFileContent);
+            $this->symfonyStyle->success(\sprintf('File "%s" was created', $outputFilePath));
+        }
 
         return self::SUCCESS;
+    }
+
+    private function renderToReadme(string $markdownFileContent): void
+    {
+        $readmeFilepath = getcwd() . '/README.md';
+        Assert::fileExists($readmeFilepath);
+
+        $readmeContents = FileSystem::read($readmeFilepath);
+
+        Assert::contains($readmeContents, self::README_PLACEHOLDER_START);
+        Assert::contains($readmeContents, self::README_PLACEHOLDER_END);
+
+        /** @var string $readmeContents */
+        $readmeContents = preg_replace(
+            '#' . preg_quote(self::README_PLACEHOLDER_START, '#') . '(.*?)' .
+                preg_quote(self::README_PLACEHOLDER_END, '#') . '#s',
+            self::README_PLACEHOLDER_START . PHP_EOL . $markdownFileContent . PHP_EOL . self::README_PLACEHOLDER_END,
+            $readmeContents
+        );
+
+        FileSystem::write($readmeFilepath, $readmeContents);
+        $this->symfonyStyle->success('README.md was updated');
+        $this->symfonyStyle->newLine();
     }
 }

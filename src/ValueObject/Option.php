@@ -25,4 +25,9 @@ final class Option
      * @var string
      */
     public const SKIP_TYPE = 'skip-type';
+
+    /**
+     * @var string
+     */
+    public const README = 'readme';
 }
