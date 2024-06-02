@@ -1,4 +1,5 @@
 #!/usr/bin/env php
-<?php
+<?php 
+namespace RuleDocGenerator202406;
 
 require __DIR__ . '/rule-doc-generator.php';
