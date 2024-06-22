@@ -8,7 +8,8 @@ final class RuleClassWithFilePath
 {
     public function __construct(
         private readonly string $class,
-        private readonly string $path
+        private readonly string $path,
+        private readonly bool $isDeprecated
     ) {
     }
 
@@ -20,5 +21,10 @@ final class RuleClassWithFilePath
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function isDeprecated(): bool
+    {
+        return $this->isDeprecated;
     }
 }

@@ -77,6 +77,9 @@ final class DirectoryToMarkdownPrinter
      */
     private function filterOutSkippedTypes(array $ruleClassWithFilePaths, array $skipTypes): array
     {
+        // remove deprecated classes, as no point in promoting them
+        $ruleClassWithFilePaths = array_filter($ruleClassWithFilePaths, static fn (RuleClassWithFilePath $ruleClassWithFilePath): bool => $ruleClassWithFilePath->isDeprecated() === false);
+
         if ($skipTypes === []) {
             return $ruleClassWithFilePaths;
         }
