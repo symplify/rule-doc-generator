@@ -37,8 +37,10 @@ final class ClassByTypeFinder
                 continue;
             }
 
+            $isDeprecated = str_contains((string) $reflectionClass->getDocComment(), '@deprecated');
+
             $relativeFilePath = PathsHelper::relativeFromDirectory($filePath, $workingDirectory);
-            $desiredClasses[] = new RuleClassWithFilePath($class, $relativeFilePath);
+            $desiredClasses[] = new RuleClassWithFilePath($class, $relativeFilePath, $isDeprecated);
         }
 
         usort(
