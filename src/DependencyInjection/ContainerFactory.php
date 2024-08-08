@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symplify\RuleDocGenerator\Command\GenerateCommand;
+use Symplify\RuleDocGenerator\Command\ValidateCommand;
 
 /**
  * @api tests and bin file DI factory
@@ -53,6 +54,9 @@ final class ContainerFactory
 
             $generateCommand = $container->make(GenerateCommand::class);
             $application->add($generateCommand);
+
+            $validateCommand = $container->make(ValidateCommand::class);
+            $application->add($validateCommand);
 
             $this->propertyCallable($application, 'commands', static function (array $defaultCommands) {
                 unset($defaultCommands['completion']);
