@@ -80,7 +80,7 @@ final class ValidateCommand extends Command
             }
         }
 
-        if ($isValid) {
+        if ($isValid === false) {
             return self::FAILURE;
         }
 
