@@ -12,11 +12,15 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class RectorRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterface
 {
-    public function __construct(
-        private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter,
-    ) {
+    /**
+     * @readonly
+     * @var \Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\DiffCodeSamplePrinter
+     */
+    private $diffCodeSamplePrinter;
+    public function __construct(DiffCodeSamplePrinter $diffCodeSamplePrinter)
+    {
+        $this->diffCodeSamplePrinter = $diffCodeSamplePrinter;
     }
-
     public function isMatch(string $class): bool
     {
         return is_a($class, RectorInterface::class, true);
