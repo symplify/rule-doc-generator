@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Symplify\RuleDocGenerator;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symplify\RuleDocGenerator\Contract\DocumentedRuleInterface;
 use Symplify\RuleDocGenerator\Exception\ShouldNotHappenException;
-use Symplify\RuleDocGenerator\FileSystem\ClassByTypeFinder;
+use Symplify\RuleDocGenerator\FileSystem\RuleDefinitionClassesFinder;
 use Symplify\RuleDocGenerator\Printer\RuleDefinitionsPrinter;
 use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
 
@@ -17,7 +16,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleClassWithFilePath;
 final class DirectoryToMarkdownPrinter
 {
     public function __construct(
-        private readonly ClassByTypeFinder $classByTypeFinder,
+        private readonly RuleDefinitionClassesFinder $classByTypeFinder,
         private readonly SymfonyStyle $symfonyStyle,
         private readonly RuleDefinitionsResolver $ruleDefinitionsResolver,
         private readonly RuleDefinitionsPrinter $ruleDefinitionsPrinter,
@@ -31,24 +30,20 @@ final class DirectoryToMarkdownPrinter
     public function print(string $workingDirectory, array $directories, ?int $categorizeLevel, array $skipTypes): string
     {
         // 1. collect documented rules in provided path
-        $documentedRuleClasses = $this->classByTypeFinder->findByType(
-            $workingDirectory,
-            $directories,
-            DocumentedRuleInterface::class
-        );
+        $ruleWithFilePaths = $this->classByTypeFinder->findAndCreateRuleWithFilePaths($directories, $workingDirectory);
 
-        $documentedRuleClasses = $this->filterOutSkippedTypes($documentedRuleClasses, $skipTypes);
-        if ($documentedRuleClasses === []) {
+        $ruleWithFilePaths = $this->filterOutSkippedTypes($ruleWithFilePaths, $skipTypes);
+        if ($ruleWithFilePaths === []) {
             // we need at least some classes
             throw new ShouldNotHappenException(sprintf('No documented classes found in "%s" directories', implode('","', $directories)));
         }
 
-        $message = sprintf('Found %d documented rule classes', count($documentedRuleClasses));
+        $message = sprintf('Found %d documented rule classes', count($ruleWithFilePaths));
         $this->symfonyStyle->note($message);
 
         $classes = array_map(
             static fn (RuleClassWithFilePath $ruleClassWithFilePath): string => $ruleClassWithFilePath->getClass(),
-            $documentedRuleClasses
+            $ruleWithFilePaths
         );
 
         $this->symfonyStyle->listing($classes);
@@ -56,7 +51,7 @@ final class DirectoryToMarkdownPrinter
         // 2. create rule definition collection
         $this->symfonyStyle->note('Resolving rule definitions');
 
-        $ruleDefinitions = $this->ruleDefinitionsResolver->resolveFromClassNames($documentedRuleClasses);
+        $ruleDefinitions = $this->ruleDefinitionsResolver->resolveFromClassNames($ruleWithFilePaths);
 
         // 3. print rule definitions to markdown lines
         $this->symfonyStyle->note('Printing rule definitions');
