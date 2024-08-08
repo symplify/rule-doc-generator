@@ -12,19 +12,29 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class ECSRuleCodeSamplePrinter implements RuleCodeSamplePrinterInterface
 {
-    public function __construct(
-        private readonly BadGoodCodeSamplePrinter $badGoodCodeSamplePrinter,
-        private readonly DiffCodeSamplePrinter $diffCodeSamplePrinter
-    ) {
+    /**
+     * @readonly
+     * @var \Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\BadGoodCodeSamplePrinter
+     */
+    private $badGoodCodeSamplePrinter;
+    /**
+     * @readonly
+     * @var \Symplify\RuleDocGenerator\Printer\CodeSamplePrinter\DiffCodeSamplePrinter
+     */
+    private $diffCodeSamplePrinter;
+    public function __construct(BadGoodCodeSamplePrinter $badGoodCodeSamplePrinter, DiffCodeSamplePrinter $diffCodeSamplePrinter)
+    {
+        $this->badGoodCodeSamplePrinter = $badGoodCodeSamplePrinter;
+        $this->diffCodeSamplePrinter = $diffCodeSamplePrinter;
     }
 
     public function isMatch(string $class): bool
     {
-        if (str_ends_with($class, 'Fixer')) {
+        if (substr_compare($class, 'Fixer', -strlen('Fixer')) === 0) {
             return true;
         }
 
-        return str_ends_with($class, 'Sniff');
+        return substr_compare($class, 'Sniff', -strlen('Sniff')) === 0;
     }
 
     /**
