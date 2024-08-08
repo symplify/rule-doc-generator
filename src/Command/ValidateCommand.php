@@ -46,6 +46,10 @@ final class ValidateCommand extends Command
 
         // 1. collect documented rules in provided path
         $classesByFilePaths = $this->ruleDefinitionClassesFinder->findInDirectories($paths);
+        if ($classesByFilePaths === []) {
+            $this->symfonyStyle->warning('No rules found in provided paths');
+            return self::FAILURE;
+        }
 
         $isValid = true;
 
@@ -79,6 +83,8 @@ final class ValidateCommand extends Command
         if ($isValid) {
             return self::FAILURE;
         }
+
+        $this->symfonyStyle->success(sprintf('All "%d" rule definitions are valid', count($classesByFilePaths)));
 
         return self::SUCCESS;
     }
